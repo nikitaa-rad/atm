@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_06_164411) do
+ActiveRecord::Schema.define(version: 2020_12_06_172217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,4 +21,14 @@ ActiveRecord::Schema.define(version: 2020_12_06_164411) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "banknote_quantities", force: :cascade do |t|
+    t.bigint "atm_device_id", null: false
+    t.integer "nominal", null: false
+    t.integer "amount", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["atm_device_id"], name: "index_banknote_quantities_on_atm_device_id"
+  end
+
+  add_foreign_key "banknote_quantities", "atm_devices"
 end
