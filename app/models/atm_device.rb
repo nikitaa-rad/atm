@@ -1,0 +1,2 @@
+class AtmDevice < ApplicationRecord
+end
