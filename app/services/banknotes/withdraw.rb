@@ -34,18 +34,15 @@ module Banknotes
 
         division = @total.div(banknote.to_i)
 
-        if division <= quantity
-          @total = @total - division * banknote.to_i
-          @transaction[banknote] = division
-        else
-          @total = @total - quantity * banknote.to_i
-          @transaction[banknote] = quantity
-        end
+        reduced_banknote_amount = division <= quantity ? division : quantity
+
+        @total = @total - reduced_banknote_amount * banknote.to_i
+        @transaction[banknote] = reduced_banknote_amount
       end
     end
 
     def check_total
-      raise ::Banknotes::ParameterError.new('CAN_NOT_WITHDRAW_SUCH_AMOUNT') unless @total.zero?
+      raise ::Banknotes::ParameterError.new('CAN_NOT_WITHDRAW_SUCH_AMOUNT') if @total.positive?
     end
 
     def update_banknote_quantities
