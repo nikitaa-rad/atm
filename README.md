@@ -12,5 +12,3 @@ Example:
 Entered value - 85, possible response - {50: 1, 10: 3, 1: 5}
 
 3) Available banknotes amount should reduce with every withdrawal.
-
-4) The task should be implemented as a RESTful API.
