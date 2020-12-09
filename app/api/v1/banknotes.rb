@@ -12,12 +12,19 @@ module V1
             end
           end
           post do
-            atm_device = AtmDevice.find(params[:atm_device_id])
-
             error!('YOUR_BANKNOTES_ARE_NOT_ACCEPTED', 400) unless permitted_params.keys.present?
             error!('BANKNOTE_AMOUNT_SHOULD_BE_GREATER_THAN_0', 400) unless permitted_params.values.all?(&:positive?)
 
-            ::Banknotes::Purchase.call(atm_device: atm_device, banknotes: permitted_params)
+            transaction = ::Banknotes::Purchase.call(atm_device: atm_device, banknotes: permitted_params)
+
+            transaction.banknotes
+          end
+
+          desc 'Withdraws money from the atm'
+          params do
+
+          end
+          patch do
 
           end
         end

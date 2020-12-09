@@ -24,11 +24,20 @@ RSpec.describe V1::Banknotes, type: :request do
 
     context 'with valid params' do
       it 'calls Banknotes::Purchase' do
-        expect(Banknotes::Purchase).to receive(:call).with(atm_device: atm_device, banknotes: { '10' => 4 }).once
+        expect(Banknotes::Purchase).to receive(:call)
+                                         .with(atm_device: atm_device, banknotes: { '10' => 4 })
+                                         .and_call_original
 
         post base_url, params: { '10' => 4 }
 
         expect_status(201)
+      end
+
+      it 'returns transaction' do
+        post base_url, params: { '10' => 4 }
+
+        expect_status(201)
+        expect_json('10', 4)
       end
     end
   end

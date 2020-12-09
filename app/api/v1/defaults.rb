@@ -9,6 +9,10 @@ module V1
       format :json
 
       helpers do
+        def atm_device
+          @atm_device ||= AtmDevice.find(params[:atm_device_id])
+        end
+
         def permitted_params
           @permitted_params ||= declared(params, include_missing: false)
         end
