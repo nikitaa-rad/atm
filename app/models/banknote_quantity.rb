@@ -6,6 +6,7 @@ class BanknoteQuantity < ApplicationRecord
   validates :nominal, inclusion: { in: AVAILABLE_NOMINAL }
   validates :amount, numericality: { greater_than_or_equal_to: 0 }
   validates :nominal, uniqueness: { scope: :atm_device }
+  validates :nominal, :amount, presence: true
 
   scope :in_stock, -> { where.not(amount: 0) }
 end
