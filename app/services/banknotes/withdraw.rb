@@ -70,6 +70,5 @@ module Banknotes
                                         .sort_by { |banknote, quantity| -banknote }
                                         .to_h
     end
-
   end
 end
