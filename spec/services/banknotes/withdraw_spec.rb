@@ -8,15 +8,25 @@ RSpec.describe Banknotes::Withdraw do
   let!(:nominal_5_banknote) { create :banknote_quantity, atm_device: atm_device, nominal: '5', amount: 1 }
   let!(:nominal_10_banknote) { create :banknote_quantity, atm_device: atm_device, nominal: '10', amount: 2 }
 
-  context 'with not enough amount of banknotes' do
-    let(:total) { 30 }
+  context 'with invalid params' do
+    context 'with negative amount of banknotes' do
+      let(:total) { -20 }
 
-    it 'raises Banknotes::ParameterError' do
-      expect { subject }.to raise_error(Banknotes::ParameterError, 'CAN_NOT_WITHDRAW_SUCH_AMOUNT')
+      it 'raises Banknotes::ParameterError' do
+        expect { subject }.to raise_error(Banknotes::ParameterError, 'TOTAL_SHOULD_BE_GREATER_THAN_0')
+      end
+    end
+
+    context 'with not enough amount of banknotes' do
+      let(:total) { 30 }
+
+      it 'raises Banknotes::ParameterError' do
+        expect { subject }.to raise_error(Banknotes::ParameterError, 'CAN_NOT_WITHDRAW_SUCH_AMOUNT')
+      end
     end
   end
 
-  context 'with enough amount of banknotes' do
+  context 'with valid params' do
     let(:total) { 20 }
 
     context 'with banknote_quantity' do

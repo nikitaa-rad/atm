@@ -13,6 +13,8 @@ module Banknotes
     end
 
     def call
+      raise ::Banknotes::ParameterError.new('TOTAL_SHOULD_BE_GREATER_THAN_0') unless @total.positive?
+
       ActiveRecord::Base.transaction do
         build_transaction
 

@@ -12,6 +12,9 @@ module Banknotes
     end
 
     def call
+      raise ::Banknotes::ParameterError.new('YOUR_BANKNOTES_ARE_NOT_ACCEPTED') unless banknotes.keys.present?
+      raise ::Banknotes::ParameterError.new('BANKNOTE_AMOUNT_SHOULD_BE_GREATER_THAN_0') unless banknotes.values.all?(&:positive?)
+
       ActiveRecord::Base.transaction do
         update_banknote_quantities
 

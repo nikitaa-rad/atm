@@ -29,6 +29,10 @@ module V1
       rescue_from ActiveRecord::RecordInvalid do |e|
         error_response({ message: e.message, status: 422 })
       end
+
+      rescue_from ::Banknotes::ParameterError do |e|
+        error_response({ message: e.message, status: 400 })
+      end
     end
   end
 end

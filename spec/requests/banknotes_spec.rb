@@ -41,4 +41,8 @@ RSpec.describe V1::Banknotes, type: :request do
       end
     end
   end
+
+  describe 'POST v1/atm_devices/:atm_device_id/banknotes' do
+
+  end
 end
