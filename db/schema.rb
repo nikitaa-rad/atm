@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_08_232837) do
+ActiveRecord::Schema.define(version: 2020_12_09_010021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2020_12_08_232837) do
     t.json "banknotes", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "transaction_type", null: false
     t.index ["atm_device_id"], name: "index_transactions_on_atm_device_id"
   end
 

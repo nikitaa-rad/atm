@@ -31,7 +31,10 @@ module Banknotes
     end
 
     def create_atm_transaction
-      atm_device.transactions.create!(banknotes: banknotes)
+      atm_device.transactions.create!(
+        transaction_type: Transaction.transaction_types[:purchasing],
+        banknotes: banknotes
+      )
     end
   end
 end

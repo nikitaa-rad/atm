@@ -11,7 +11,7 @@ RSpec.describe Banknotes::Purchase do
 
   context 'with transactions' do
     it 'creates atm transaction' do
-      expect { subject }.to change { atm_device.transactions.count }.by(1)
+      expect { subject }.to change { atm_device.transactions.purchasing.count }.by(1)
     end
 
     it 'returns created transaction with purchased banknotes' do
