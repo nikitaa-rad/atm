@@ -12,3 +12,5 @@ Example:
 Entered value - 85, possible response - {50: 1, 10: 3, 1: 5}
 
 3) Available banknotes amount should reduce with every withdrawal.
+
+Used Ruby 2.7, Rails 6.0.3, grape, Rspec (with factory_fot, airborne).
