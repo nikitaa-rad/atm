@@ -22,10 +22,14 @@ module V1
 
           desc 'Withdraws money from the atm'
           params do
-
+            requires :total, type: Integer
           end
           patch do
+            error!('TOTAL_SHOULD_BE_GREATER_THAN_0', 400) unless permitted_params[:total].positive?
 
+            transaction = ::Banknotes::Withdraw.call(atm_device: atm_device, total: permitted_params[:total])
+
+            transaction.banknotes
           end
         end
       end
