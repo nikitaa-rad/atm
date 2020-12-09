@@ -5,44 +5,47 @@ RSpec.describe V1::Banknotes, type: :request do
 
   let(:atm_device) { create :atm_device }
 
-  describe 'POST v1/atm_devices/:atm_device_id/banknotes' do
-    context 'with invalid params' do
-      it 'returns 400 if banknote amount is less than 0' do
-        post base_url, params: { '10' => -1 }
+  describe 'POST /v1/atm_devices/:atm_device_id/banknotes' do
+    let(:params) { Hash('10' => 4) }
 
-        expect_status(400)
-        expect_json(error: 'BANKNOTE_AMOUNT_SHOULD_BE_GREATER_THAN_0')
-      end
+    it 'calls Banknotes::Purchase' do
+      expect(Banknotes::Purchase).to receive(:call)
+                                       .with(atm_device: atm_device, banknotes: { '10' => 4 })
+                                       .and_call_original
 
-      it 'returns 400 if not allowed banknotes were added' do
-        post base_url, params: { '123' => 20 }
+      post base_url, params: params
 
-        expect_status(400)
-        expect_json(error: 'YOUR_BANKNOTES_ARE_NOT_ACCEPTED')
-      end
+      expect_status(201)
     end
 
-    context 'with valid params' do
-      it 'calls Banknotes::Purchase' do
-        expect(Banknotes::Purchase).to receive(:call)
-                                         .with(atm_device: atm_device, banknotes: { '10' => 4 })
-                                         .and_call_original
+    it 'returns transaction' do
+      post base_url, params: params
 
-        post base_url, params: { '10' => 4 }
-
-        expect_status(201)
-      end
-
-      it 'returns transaction' do
-        post base_url, params: { '10' => 4 }
-
-        expect_status(201)
-        expect_json('10', 4)
-      end
+      expect_status(201)
+      expect_json('10', 4)
     end
   end
 
-  describe 'POST v1/atm_devices/:atm_device_id/banknotes' do
+  describe 'POST /v1/atm_devices/:atm_device_id/banknotes' do
+    let(:params) { Hash('total' => 1) }
 
+    before { create :banknote_quantity, atm_device: atm_device, nominal: '1', amount: 10 }
+
+    it 'calls Banknotes::Withdraw' do
+      expect(Banknotes::Withdraw).to receive(:call)
+                                       .with(atm_device: atm_device, total: 1)
+                                       .and_call_original
+
+      patch base_url, params: params
+
+      expect_status(200)
+    end
+
+    it 'returns transaction' do
+      patch base_url, params: params
+
+      expect_status(200)
+      expect_json('1', 1)
+    end
   end
 end
